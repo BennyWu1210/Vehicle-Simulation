@@ -15,7 +15,7 @@ public class Pedestrian extends SuperSmoothMover
         speed = maxSpeed;
         // start as awake 
         awake = true;
-        
+        setImage("businessman.png");
         this.direction = direction;
     }
 
@@ -23,6 +23,7 @@ public class Pedestrian extends SuperSmoothMover
      * Act - do whatever the Pedestrian wants to do. This method is called whenever
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
+    
     public void act()
     {
         // If there is a v
