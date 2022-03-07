@@ -1,0 +1,19 @@
+#BlueJ class context
+comment0.target=Vehicle
+comment0.text=\n\ This\ is\ the\ superclass\ for\ Vehicles.\n\ \n
+comment1.params=
+comment1.target=boolean\ checkHitPedestrian()
+comment2.params=origin
+comment2.target=Vehicle(VehicleSpawner)
+comment3.params=w
+comment3.target=void\ addedToWorld(greenfoot.World)
+comment4.params=
+comment4.target=boolean\ checkEdge()
+comment4.text=\n\ A\ method\ used\ by\ all\ Vehicles\ to\ check\ if\ they\ are\ at\ the\ edg\n
+comment5.params=
+comment5.target=void\ drive()
+comment5.text=\n\ Method\ that\ deals\ with\ movement.\ Speed\ can\ be\ set\ by\ individual\ subclasses\ in\ their\ constructors\n
+comment6.params=
+comment6.target=double\ getSpeed()
+comment6.text=\n\ An\ accessor\ that\ can\ be\ used\ to\ get\ this\ Vehicle's\ speed.\ Used,\ for\ example,\ when\ a\ vehicle\ wants\ to\ see\n\ if\ a\ faster\ vehicle\ is\ ahead\ in\ the\ lane.\n
+numComments=7
