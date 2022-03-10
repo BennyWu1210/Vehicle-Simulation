@@ -1,0 +1,10 @@
+#BlueJ class context
+comment0.target=Businessman
+comment0.text=\n\ Write\ a\ description\ of\ class\ Businessman\ here.\n\ \n\ @author\ Benny\ \n\ @version\ (a\ version\ number\ or\ a\ date)\n
+comment1.params=direction
+comment1.target=Businessman(int)
+comment2.params=
+comment2.target=void\ act()
+comment3.params=
+comment3.target=void\ spawnGoldCoin()
+numComments=4

@@ -32,7 +32,7 @@ public class VehicleWorld extends World
      */
     public VehicleWorld()
     {    
-        // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
+        // Create a new world with 800x600 cells with a cell size of 1x1 pixels.
         super(800, 600, 1, false); 
 
         setPaintOrder (Plane.class, Animation.class, Car.class, Pedestrian.class, Bus.class, Ambulance.class);
@@ -82,14 +82,25 @@ public class VehicleWorld extends World
         }
 
         // Chance to spawn a Pedestrian
-        if (Greenfoot.getRandomNumber (60) == 0){
-            int xSpawnLocation = Greenfoot.getRandomNumber (600) + 100; // random between 99 and 699, so not near edges
-            boolean spawnAtTop = Greenfoot.getRandomNumber(2) == 0 ? true : false;
-            if (spawnAtTop){
-                addObject (new Pedestrian (1), xSpawnLocation, 50);
-            } else {
-                addObject (new Pedestrian (-1), xSpawnLocation, 550);
+        if (Greenfoot.getRandomNumber (30) == 0){
+            
+            int spawnDir = Greenfoot.getRandomNumber(2) == 0 ? 1 : -1;
+            int xLocation = Greenfoot.getRandomNumber (600) + 100; // random between 99 and 699, so not near edges
+            int yLocation = spawnDir == 1 ? 50 : 550;
+            int pedestrianType = Greenfoot.getRandomNumber(4);
+            
+            if (pedestrianType == 0){
+                    addObject(new Soldier(spawnDir), xLocation, yLocation);
+            } else if (pedestrianType == 1){
+                addObject(new Businessman(spawnDir), xLocation, yLocation);
+            } else if (pedestrianType == 2){
+                addObject(new Hero(spawnDir), xLocation, yLocation);
+            } else if (pedestrianType == 3){
+                addObject(new RunningMan(spawnDir), xLocation, yLocation);
             }
+            
+                    
+
         }
     }
 

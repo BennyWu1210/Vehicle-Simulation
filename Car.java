@@ -29,7 +29,7 @@ public class Car extends Vehicle
         
         Pedestrian p = (Pedestrian)getOneObjectAtOffset((int)speed + getImage().getWidth()/2, 4, Pedestrian.class);
         
-        if (p != null){
+        if (p != null && p.canBeHit()){
             p.knockDown();
             return true;
         }

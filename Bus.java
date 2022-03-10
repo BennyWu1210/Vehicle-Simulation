@@ -51,7 +51,7 @@ public class Bus extends Vehicle
             // System.out.println(x);
             Pedestrian p = (Pedestrian)getOneObjectAtOffset(x, yOffset, Pedestrian.class);
             
-            if (p != null && p.isAwake() && p.getDirection() == -1){
+            if (p != null && p.isAwake() && p.canBeHit() && p.getDirection() == -1){
                 Animation a = new AddOne(getPreciseX(), getPreciseY());
                 getWorld().addObject(a, (int)p.getPreciseX(), (int)p.getPreciseY());
                 getWorld().removeObject(p);
@@ -63,7 +63,7 @@ public class Bus extends Vehicle
             
             p = (Pedestrian)getOneObjectAtOffset(x, -yOffset, Pedestrian.class);
             
-            if (p != null && p.isAwake() && p.getDirection() == 1){
+            if (p != null && p.isAwake() && p.canBeHit() && p.getDirection() == 1){
                 Animation a = new AddOne(getPreciseX(), getPreciseY());
                 getWorld().addObject(a, (int)p.getPreciseX(), (int)p.getPreciseY());
                 getWorld().removeObject(p);

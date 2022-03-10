@@ -1,5 +1,5 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, and Greenfoot)
-
+import java.util.*;
 /**
  * <p>A variation of an actor that maintains a precise location (using doubles for the co-ordinates
  * instead of ints).  This allows small precise movements (e.g. movements of 1 pixel or less)
@@ -32,7 +32,27 @@ public abstract class SuperSmoothMover extends Actor
     private double exactY;
     private double rotation;
     
+    // for gif images
+    protected boolean isGif;
+    protected List<GreenfootImage> gifImageList;
+    protected GifImage gifImage;
+    protected int gifCounter, gifIndex, gifChangeRate;
+    
 
+    /**
+     * The main act method for superSmoothMover class
+     */
+    public void act(){
+        
+        if (isGif){
+            gifCounter --;
+            if (gifCounter <= 0){
+                getImage();
+                gifCounter = gifChangeRate;
+            }
+        }
+    }
+    
     /**
      * Move forward by the specified distance.
      * (Overrides the method in Actor).
@@ -170,5 +190,19 @@ public abstract class SuperSmoothMover extends Actor
     
     public double getPreciseRotation (){
         return rotation;
+    }
+    
+    public GreenfootImage getImage(){
+        if (!isGif) {
+            return super.getImage();
+        }
+        
+        gifIndex ++;
+        if (gifIndex == gifImageList.size()) {
+            gifIndex = 0;
+        }
+        
+        return gifImageList.get(gifIndex);
+
     }
 }
