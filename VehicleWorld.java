@@ -38,7 +38,8 @@ public class VehicleWorld extends World
         setPaintOrder (Plane.class, Animation.class, Car.class, Pedestrian.class, Bus.class, Ambulance.class);
 
         // set up background
-        background = new GreenfootImage ("background01.png");
+        background = new GreenfootImage ("background_image04.jpg");
+        background.scale(800, 600);
         setBackground (background);
     
         
@@ -53,7 +54,7 @@ public class VehicleWorld extends World
         laneSpawners = new VehicleSpawner[laneCount];
 
         // Prepare lanes method - draws the lanes
-        lanePositionsY = prepareLanes (this, background, laneSpawners, 222, laneHeight, laneCount, spaceBetweenLanes, twoWayTraffic, splitAtCenter);
+        lanePositionsY = prepareLanes (this, background, laneSpawners, 230, laneHeight, laneCount, spaceBetweenLanes, twoWayTraffic, splitAtCenter);
 
     }
     public void act () {
