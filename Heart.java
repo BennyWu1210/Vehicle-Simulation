@@ -6,10 +6,10 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class AddOne extends Effect
+public class Heart extends Effect
 {
     
-    public AddOne(double x, double y){
+    public Heart(double x, double y){
         super(x, y, 180);
         this.getImage().scale(32, 32);
         
@@ -18,6 +18,7 @@ public class AddOne extends Effect
     public void act()
     {
         super.act();
+        System.out.println("HEART");
         
     }
 }

@@ -10,9 +10,10 @@ public abstract class Vehicle extends SuperSmoothMover
     protected double speed;
     protected int direction; // 1 = right, -1 = left
     protected boolean moving;
+    protected boolean snowy;
     protected int yOffset;
     protected VehicleSpawner origin;
-    protected SimpleTimer stoppedTimer = new SimpleTimer();
+    protected int stoppedTick;
     
     protected abstract boolean checkHitPedestrian ();
 
@@ -57,20 +58,39 @@ public abstract class Vehicle extends SuperSmoothMover
         // since every Vehicle "promises" to have a getSpeed() method,
         // we can call that on any vehicle to find out it's speed
         Vehicle ahead = (Vehicle) getOneObjectAtOffset (direction * (int)(speed + getImage().getWidth()/2 + 4), 0, Vehicle.class);
-        if (ahead == null || ahead.getClass() == Plane.class) // make sure the groud vehicles do not follow the plane in front of them
-        {
-            speed = maxSpeed;
-        } else if (this.getClass() != Plane.class){
-            speed = ahead.getSpeed();
+        if (this.getClass() != Plane.class){
+            if (ahead == null && !snowy || ahead != null && ahead.getClass() == Plane.class) // make sure the groud vehicles do not follow the plane in front of them
+            {
+                speed = maxSpeed;
+            } else if (ahead == null && snowy){
+                speed = maxSpeed / 3;
+            } else {
+                speed = ahead.getSpeed();
+            } 
         }
         move (speed * direction);
     }   
+    
+    public void Explode(){
+        
+    }
 
+    public void setMaxSpeed(double speed){
+        this.maxSpeed = speed;
+    }
     /**
      * An accessor that can be used to get this Vehicle's speed. Used, for example, when a vehicle wants to see
      * if a faster vehicle is ahead in the lane.
      */
     public double getSpeed(){
-        return speed;
+        return this.speed;
+    }
+    
+    public double getMaxSpeed(){
+        return this.maxSpeed;
+    }
+    
+    public void setSnowState(boolean snowState){
+        this.snowy = snowState;
     }
 }

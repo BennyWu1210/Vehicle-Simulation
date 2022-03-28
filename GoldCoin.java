@@ -6,7 +6,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class GoldCoin extends Animation
+public class GoldCoin extends Effect
 {
     /**
      * Act - do whatever the GoldCoin wants to do. This method is called whenever
@@ -14,7 +14,7 @@ public class GoldCoin extends Animation
      */
     
     public GoldCoin(int x, int y){
-        super(x, y);
+        super(x, y, 5);
         this.isGif = true;
         this.gifImage = new GifImage("goldCoin.gif");
         this.gifImageList = gifImage.getImages();
@@ -25,14 +25,7 @@ public class GoldCoin extends Animation
     
     public void act()
     {
-        if (isGif){
-            System.out.println("udfis");
-            gifCounter --;
-            if (gifCounter <= 0){
-                getImage();
-                gifCounter = gifChangeRate;
-            }
-        }
+        super.act();
 
     }
     

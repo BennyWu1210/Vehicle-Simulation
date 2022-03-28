@@ -16,7 +16,7 @@ public class Businessman extends Pedestrian
         
         // set a random speed and image
         
-        this.speed = 0.8 + (Math.random() * 1.1);
+        this.maxSpeed = this.speed = 1 + (Math.random() * 1.1);
         setImage("businessman.png");
         
     }

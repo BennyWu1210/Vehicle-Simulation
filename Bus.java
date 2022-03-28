@@ -9,12 +9,14 @@ public class Bus extends Vehicle
         super (origin); // call the superclass' constructor first
         
         //Set up values for Bus
-        maxSpeed = 1.5 + ((Math.random() * 10)/5);
+        maxSpeed = 3 + (Math.random() * 3.5);
         speed = maxSpeed;
         // because the Bus graphic is tall, offset it a up (this may result in some collision check issues)
-        yOffset = getImage().getHeight()/2 + 3;
+        yOffset = getImage().getHeight()/2 - 20;
+        
     }
-
+    
+  
     /**
      * Act - do whatever the Bus wants to do. This method is called whenever
      * the 'Act' or 'Run' button gets pressed in the environment.
@@ -25,10 +27,12 @@ public class Bus extends Vehicle
             drive();
         }
         else if (!moving){
-            if (stoppedTimer.millisElapsed() > 1000){
+            if (stoppedTick == 0){
                 moving = true;
                 speed = maxSpeed;
-            } 
+            } else{
+                stoppedTick --;
+            }
             /* else{
                 speed = maxSpeed * Math.abs(500 - stoppedTimer.millisElapsed()) / 5000.0;
             }
@@ -52,24 +56,24 @@ public class Bus extends Vehicle
             Pedestrian p = (Pedestrian)getOneObjectAtOffset(x, yOffset, Pedestrian.class);
             
             if (p != null && p.isAwake() && p.canBeHit() && p.getDirection() == -1){
-                Animation a = new AddOne(getPreciseX(), getPreciseY());
+                Effect a = new AddOne(getPreciseX(), getPreciseY());
                 getWorld().addObject(a, (int)p.getPreciseX(), (int)p.getPreciseY());
                 getWorld().removeObject(p);
                 moving = false;
                 speed = 0;
-                stoppedTimer.mark();
+                stoppedTick = 60;
                 return true;
             }
             
             p = (Pedestrian)getOneObjectAtOffset(x, -yOffset, Pedestrian.class);
             
             if (p != null && p.isAwake() && p.canBeHit() && p.getDirection() == 1){
-                Animation a = new AddOne(getPreciseX(), getPreciseY());
+                Effect a = new AddOne(getPreciseX(), getPreciseY());
                 getWorld().addObject(a, (int)p.getPreciseX(), (int)p.getPreciseY());
                 getWorld().removeObject(p);
                 moving = false;
                 speed = 0;
-                stoppedTimer.mark();
+                stoppedTick = 60;
                 return true;
             }
             

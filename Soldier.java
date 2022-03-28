@@ -18,12 +18,16 @@ public class Soldier extends Pedestrian
         super(direction);
         
         // set a random speed and image
-        this.speed = 1.2 + (Math.random() * 1.2);
+        this.maxSpeed = this.speed = 1.2 + (Math.random() * 1.2);
         setImage("soldier.png");
     }
     public void act()
     {
         super.act();
+        if (Greenfoot.getRandomNumber(100) == 0) {
+            Effect ex = new Explosion(getX(), getY());
+            getWorld().addObject(ex, getX(),getY());
+        }
         // Add your action code here.
     }
 }

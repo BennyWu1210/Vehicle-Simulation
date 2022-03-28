@@ -1,8 +1,8 @@
 #BlueJ class context
-comment0.target=Animation
+comment0.target=Effect
 comment0.text=\n\ Write\ a\ description\ of\ class\ Animation\ here.\n\ \n\ @author\ (your\ name)\ \n\ @version\ (a\ version\ number\ or\ a\ date)\n
-comment1.params=x\ y
-comment1.target=Animation(double,\ double)
+comment1.params=x\ y\ ticks
+comment1.target=Effect(double,\ double,\ int)
 comment2.params=
 comment2.target=void\ act()
 numComments=3

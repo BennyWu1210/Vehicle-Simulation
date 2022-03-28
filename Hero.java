@@ -13,7 +13,7 @@ public class Hero extends Pedestrian
         super(direction);
         
         // set a random speed and direction
-        this.speed = 5 + (Math.random() * 1);
+        this.maxSpeed = this.speed = 5 + (Math.random() * 1);
         this.canHit = false;
         setImage("hero.png");
     }

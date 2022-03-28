@@ -21,7 +21,7 @@ public class RunningMan extends Pedestrian
         // call super constructor
         super(direction);
         
-        this.speed = 2 + (Math.random() * 1.5);
+        this.maxSpeed = this.speed = 2 + (Math.random() * 1.5);
         this.canHit = false;
         this.isGif = true;
         this.gifImage = new GifImage("runningMan.gif");

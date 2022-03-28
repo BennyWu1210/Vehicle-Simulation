@@ -25,6 +25,9 @@ public class VehicleWorld extends World
     private int laneHeight, laneCount, spaceBetweenLanes;
     private int[] lanePositionsY;
     private VehicleSpawner[] laneSpawners;
+    private int weatherTicks;
+    private boolean snowy;
+    private Effect weather;
 
     /**
      * Constructor for objects of class MyWorld.
@@ -35,7 +38,7 @@ public class VehicleWorld extends World
         // Create a new world with 800x600 cells with a cell size of 1x1 pixels.
         super(800, 600, 1, false); 
 
-        setPaintOrder (Plane.class, Animation.class, Car.class, Pedestrian.class, Bus.class, Ambulance.class);
+        setPaintOrder (Effect.class, Plane.class, Hero.class, Bus.class, Car.class, Pedestrian.class, Ambulance.class);
 
         // set up background
         background = new GreenfootImage ("background_image04.jpg");
@@ -56,34 +59,59 @@ public class VehicleWorld extends World
         // Prepare lanes method - draws the lanes
         lanePositionsY = prepareLanes (this, background, laneSpawners, 230, laneHeight, laneCount, spaceBetweenLanes, twoWayTraffic, splitAtCenter);
 
+        
+        // Init weather ticks
+        weatherTicks = 300;
     }
     public void act () {
         spawn();
+        
+        if (weatherTicks == 0){
+            weather = new Snowstorm(getWidth()/2, getHeight()/2);
+            addObject(weather, getWidth()/2, getHeight()/2);
+            snowy = true;
+            weatherTicks = (int)(600 + Math.random() * 620);
+        }
+        
+        if (weather == null || weather.getWorld() == null){
+            snowy = false;
+        }
+        
+        weatherTicks --;
     }
 
     private void spawn () {
         // Chance to spawn a vehicle
         if (Greenfoot.getRandomNumber (60) == 0){
             int lane = Greenfoot.getRandomNumber(laneCount);
-            
+            Vehicle vehicleAdded;
             if (!laneSpawners[lane].isTouchingVehicle()){
                 int vehicleType = Greenfoot.getRandomNumber(4);
                 if (vehicleType == 0){
-                    addObject(new Car(laneSpawners[lane]), 0, 0);
+                    System.out.println("HIL");
+                    vehicleAdded = new Car(laneSpawners[lane]);
                 } else if (vehicleType == 1){
-                    addObject(new Bus(laneSpawners[lane]), 0, 0);
+                    vehicleAdded = new Bus(laneSpawners[lane]);
                 } else if (vehicleType == 2){
-                    addObject(new Ambulance(laneSpawners[lane]), 0, 0);
+                    vehicleAdded = new Ambulance(laneSpawners[lane]);
                 } else if (vehicleType == 3 && Greenfoot.getRandomNumber(2) == 1){
-                    addObject(new Plane(laneSpawners[lane]), 0, 0);
+                    vehicleAdded = new Plane(laneSpawners[lane]);
+                } else{
+                    if (Greenfoot.getRandomNumber(3) == 0) vehicleAdded = new Car(laneSpawners[lane]);
+                    else vehicleAdded = new Ambulance(laneSpawners[lane]);
+                    
                 }
+                vehicleAdded.setSnowState(snowy);
+                addObject(vehicleAdded, 0, 0);
             }
+            
+            
             
             
         }
 
         // Chance to spawn a Pedestrian
-        if (Greenfoot.getRandomNumber (30) == 0){
+        if (Greenfoot.getRandomNumber (20) == 0){
             
             int spawnDir = Greenfoot.getRandomNumber(2) == 0 ? 1 : -1;
             int xLocation = Greenfoot.getRandomNumber (600) + 100; // random between 99 and 699, so not near edges
@@ -91,14 +119,15 @@ public class VehicleWorld extends World
             int pedestrianType = Greenfoot.getRandomNumber(4);
             
             if (pedestrianType == 0){
-                    addObject(new Soldier(spawnDir), xLocation, yLocation);
+                addObject(new Soldier(spawnDir), xLocation, yLocation);
             } else if (pedestrianType == 1){
                 addObject(new Businessman(spawnDir), xLocation, yLocation);
             } else if (pedestrianType == 2){
-                addObject(new Hero(spawnDir), xLocation, yLocation);
-            } else if (pedestrianType == 3){
                 addObject(new RunningMan(spawnDir), xLocation, yLocation);
+            } else if (pedestrianType == 3 && Greenfoot.getRandomNumber(3) == 0){
+                addObject(new Hero(spawnDir), xLocation, yLocation);
             }
+            
             
                     
 

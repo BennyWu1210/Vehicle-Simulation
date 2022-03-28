@@ -1,0 +1,13 @@
+#BlueJ class context
+comment0.target=Snowstorm
+comment0.text=\n\ Write\ a\ description\ of\ class\ Rain\ here.\n\ \n\ @author\ (your\ name)\ \n\ @version\ (a\ version\ number\ or\ a\ date)\n
+comment1.params=x\ y
+comment1.target=Snowstorm(int,\ int)
+comment2.params=w
+comment2.target=void\ addedToWorld(greenfoot.World)
+comment3.params=
+comment3.target=void\ act()
+comment4.params=width\ height\ severity
+comment4.target=greenfoot.GreenfootImage\ drawSnowStorm(int,\ int,\ int)
+comment4.text=\n\ severity\ should\ be\ 1-100.\ 100\ will\ be\ almost\ completely\ white\n
+numComments=5
