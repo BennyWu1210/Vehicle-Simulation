@@ -38,7 +38,7 @@ public class VehicleWorld extends World
         // Create a new world with 800x600 cells with a cell size of 1x1 pixels.
         super(800, 600, 1, false); 
 
-        setPaintOrder (Effect.class, Plane.class, Hero.class, Bus.class, Car.class, Pedestrian.class, Ambulance.class);
+        setPaintOrder (Effect.class, Plane.class, LightningVehicle.class, Hero.class, Bus.class, Car.class, Pedestrian.class, Ambulance.class);
 
         // set up background
         background = new GreenfootImage ("background_image04.jpg");
@@ -70,7 +70,7 @@ public class VehicleWorld extends World
             weather = new Snowstorm(getWidth()/2, getHeight()/2);
             addObject(weather, getWidth()/2, getHeight()/2);
             snowy = true;
-            weatherTicks = (int)(600 + Math.random() * 620);
+            weatherTicks = (int)(820 + Math.random() * 600);
         }
         
         if (weather == null || weather.getWorld() == null){
@@ -82,20 +82,20 @@ public class VehicleWorld extends World
 
     private void spawn () {
         // Chance to spawn a vehicle
-        if (Greenfoot.getRandomNumber (60) == 0){
+        if (Greenfoot.getRandomNumber (35) == 0){
             int lane = Greenfoot.getRandomNumber(laneCount);
             Vehicle vehicleAdded;
             if (!laneSpawners[lane].isTouchingVehicle()){
                 int vehicleType = Greenfoot.getRandomNumber(4);
                 if (vehicleType == 0){
-                    System.out.println("HIL");
                     vehicleAdded = new Car(laneSpawners[lane]);
                 } else if (vehicleType == 1){
                     vehicleAdded = new Bus(laneSpawners[lane]);
                 } else if (vehicleType == 2){
                     vehicleAdded = new Ambulance(laneSpawners[lane]);
-                } else if (vehicleType == 3 && Greenfoot.getRandomNumber(2) == 1){
-                    vehicleAdded = new Plane(laneSpawners[lane]);
+                } else if (vehicleType == 3){
+                    if (Greenfoot.getRandomNumber(2) == 1) vehicleAdded = new Plane(laneSpawners[lane]);
+                    else vehicleAdded = new LightningVehicle(laneSpawners[lane]);
                 } else{
                     if (Greenfoot.getRandomNumber(3) == 0) vehicleAdded = new Car(laneSpawners[lane]);
                     else vehicleAdded = new Ambulance(laneSpawners[lane]);

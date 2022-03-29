@@ -16,7 +16,7 @@ public class Effect extends Actor
     protected boolean isGif;
     protected List<GreenfootImage> gifImageList;
     protected GifImage gifImage;
-    protected int gifCounter, gifIndex, gifChangeRate;
+    protected int gifCounter, gifIndex, gifChangeRate, gifCycle;
     protected GreenfootImage image;
     
     
@@ -25,7 +25,14 @@ public class Effect extends Actor
         this.xPos = x; 
         this.yPos = y;
         this.actCounter = ticks;
+        this.gifCycle = 1;
         setLocation((int)this.xPos, (int)this.yPos);
+    }
+    
+    public Effect(double x, double y){
+        this.xPos = x;
+        this.yPos = y;
+        this.gifCycle = 1;
     }
     
     
@@ -37,12 +44,21 @@ public class Effect extends Actor
             gifCounter --;
             if (gifCounter <= 0){
                 getImage();
+                gifIndex ++;
                 gifCounter = gifChangeRate;
+            }
+            if (gifIndex == gifImageList.size()){
+                gifIndex = 0;
+                gifCycle --;
+            }
+            if (gifCycle == 0){
+                getWorld().removeObject(this);
+                return;
             }
         } else{
             if (actCounter > 0){
                 actCounter --;
-                if (actCounter < 60){
+                if (actCounter < 120){
                     getImage().setTransparency(actCounter * 2);
                 }
             } else{
@@ -52,6 +68,14 @@ public class Effect extends Actor
         
         
         
+    }
+    
+    public void setTick(int ticks){
+        this.actCounter = ticks;
+    }
+    
+    public GreenfootImage getImage(){
+        return isGif ? gifImageList.get(gifIndex) : image;
     }
     
     

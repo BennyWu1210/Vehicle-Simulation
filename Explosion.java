@@ -21,21 +21,22 @@ public class Explosion extends Effect
         this.gifChangeRate = 5;
         this.gifCounter = this.gifChangeRate;
         this.gifIndex = 0;
+        
+        // Set size for all explosion effects
+        
+        for (GreenfootImage gfi: gifImageList){
+            gfi.scale(50, 50);
+        }
     }
     public void act()
     {
-        
-        gifCounter --;
-        if (gifCounter == 0){
-            getImage();
-            gifIndex ++;
-            gifCounter = gifChangeRate;
-        }
-        if (gifIndex == gifImageList.size()){
-            getWorld().removeObject(this);
-        }
+         
         super.act();
         
         
+    }
+    
+    public GreenfootImage getImage(){
+        return gifImageList.get(gifIndex);
     }
 }

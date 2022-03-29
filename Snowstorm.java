@@ -14,9 +14,12 @@ public class Snowstorm extends Effect
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
     
-    private int maxShift, xShift, yShift, midX, midY;
+    private int maxShift, xShift, yShift;
+    private int midX, midY;
+    private final int MAX_TICK = 450;
     public Snowstorm(int x, int y){
-        super(x, y, 320);
+        super(x, y);
+        setTick(MAX_TICK);
         maxShift = 150;
     }
     
@@ -51,6 +54,10 @@ public class Snowstorm extends Effect
         if (actCounter % 2 == 0) setLocation(getX() + (midX - getX()) / 2, getY() + 1);
         
         super.act();
+        
+        if (MAX_TICK - actCounter < 120){
+            getImage().setTransparency((MAX_TICK - actCounter) * 2);
+        } 
         
     }
     

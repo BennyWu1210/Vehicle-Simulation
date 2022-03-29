@@ -17,16 +17,23 @@ public class GoldCoin extends Effect
         super(x, y, 5);
         this.isGif = true;
         this.gifImage = new GifImage("goldCoin.gif");
+        
         this.gifImageList = gifImage.getImages();
         this.gifChangeRate = 5;
+        this.gifCycle = 2;
         
         
+         // Set size for all gold coin effects
+        
+        for (GreenfootImage gfi: gifImageList){
+            gfi.scale(40, 40);
+        }
     }
     
     public void act()
     {
         super.act();
-
+        
     }
     
     

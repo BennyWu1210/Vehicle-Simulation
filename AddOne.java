@@ -11,8 +11,9 @@ public class AddOne extends Effect
     
     public AddOne(double x, double y){
         super(x, y, 180);
+        this.image = new GreenfootImage("AddOne.png");
         this.getImage().scale(32, 32);
-        
+        this.getImage().setTransparency(255);
     }
     
     public void act()

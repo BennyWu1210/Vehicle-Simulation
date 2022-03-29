@@ -31,6 +31,7 @@ public class Businessman extends Pedestrian
         if (Greenfoot.getRandomNumber(300) == 0){
             System.out.println("HUEH");
             GoldCoin c = new GoldCoin(getX(), getY());
+            getWorld().addObject(c, getX(), getY());
         }
     }
  
