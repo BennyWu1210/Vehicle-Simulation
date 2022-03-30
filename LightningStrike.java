@@ -8,78 +8,49 @@ import java.util.*;
  */
 public class LightningStrike extends Effect
 {
+    
+    private GreenfootSound sound;
     public LightningStrike(){
         super(-1, -1);
-    }
-    /*SimpleTimer time = new SimpleTimer();
-    GifImage image = new GifImage("lightningStrike.gif");
-    List<GreenfootImage> images = image.getImages();
-
-    Enemy target;
-    public LightningStrike(Enemy target, Tower tower)
-    {
-        this.target = target;
-        this.tower = tower;
-        this.damage = tower.getDamage();
-        this.splash_damage = tower.getSplashDamage();
+        this.isGif = true;
+        this.gifImage = new GifImage("lightningStrike.gif");
+        this.gifImageList = gifImage.getImages();
+        this.gifChangeRate = 5;
+        this.gifCounter = this.gifChangeRate;
+        this.gifIndex = 0;
         this.sound = new GreenfootSound("zap_sound.mp3");
-        this.sound.setVolume(35);
-        this.sound.play();
-        for(GreenfootImage img: images)
-        {
-            img.scale(100,100);
-            img.rotate(130);
-        }
+        this.sound.setVolume(30);
         
-    }  
+    }
     
-    
+    public LightningStrike(int x1, int y1, int x2, int y2){
+        super(-1, -1);
+        this.isGif = true;
+        this.gifImage = new GifImage("lightningStrike.gif");
+        this.gifImageList = gifImage.getImages();
+        this.gifChangeRate = 5;
+        this.gifCounter = this.gifChangeRate;
+        this.gifIndex = 0;
+        this.sound = new GreenfootSound("zap_sound.mp3");
+        this.sound.setVolume(18);
+        strike(new int[]{x1, y1}, new int[]{x2, y2});
+    }
     // Strikes enemy with lightning
      
     public void act()
     {
-        super.act();
-        splashDamage();
-        if(imageIndex == images.size()-1)
-        {
-            getWorld().removeObject(this);
-            return;
-        }
-        if(target.existing)
-        {
-            if(distanceFrom(tower.getX(), tower.getY())>tower.getRadius()
-            || distanceFrom(target.getX(), target.getY()) < 8 )
-            {
-                if(distanceFrom(target.getX(), target.getY()) < 8)
-                {
-                    target.takeDamage(damage);
-                }
-
-            }
-        }
-
-
-    }
-    
-    public GreenfootImage getImage()
-    {
+        this.sound.play();
+        super.act();        
         
-        GreenfootImage image = images.get((int)imageIndex);
-        imageIndex += 0.5;
-          
-        if (imageIndex>=images.size())
-        {
-            imageIndex = 0;
-        }
-            
-        return image;
     }
     
     public void strike(int[] start, int[] end)
     {
         setLocation(end[0], end[1]);
+        start[0] = end[0] + 50;
         int xDiff = end[0] - start[0];
         int yDiff = start[1] - end[1];
+        /*
         double angle = 0;
         if((xDiff>0 && yDiff>0)) //CAST Rule
         {
@@ -99,12 +70,13 @@ public class LightningStrike extends Effect
         {
             angle = 180+57.3*Math.atan((double)Math.abs(yDiff)/Math.abs(xDiff));
         }
-        
-        for(GreenfootImage img: images)
+        */
+        for(GreenfootImage img: gifImageList)
         {
-            img.rotate((int)angle);
+            img.scale(200, 200);
+            img.rotate((int)30);
         }
         
     }
-    */
+    
 }

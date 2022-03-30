@@ -8,18 +8,23 @@ public abstract class Vehicle extends SuperSmoothMover
 {
     protected double maxSpeed;
     protected double speed;
-    protected int direction; // 1 = right, -1 = left
-    protected boolean moving;
+    protected int direction, yDir; // 1 = right/down, -1 = left/up
+    protected boolean moving, changingLane;
     protected boolean snowy;
     protected int yOffset;
     protected VehicleSpawner origin;
-    protected int stoppedTick;
+    protected int stoppedTick, changeLaneTick;
+    protected int lane;
+    protected Rectangle up, down; // collision detections
+    protected int yPos; // y-position of current lane
+    protected GreenfootSound honk;
     
     protected abstract boolean checkHitPedestrian ();
 
     public Vehicle (VehicleSpawner origin) {
         this.origin = origin;
-        moving = true;
+        this.moving = true;
+        this.changeLaneTick = 30;
         if (origin.facesRightward()){
             direction = 1;
             
@@ -27,12 +32,38 @@ public abstract class Vehicle extends SuperSmoothMover
             direction = -1;
             getImage().mirrorHorizontally();
         }
+        
+        honk = new GreenfootSound("car_horn.wav");
+        honk.setVolume(15);
     }
     
     public void addedToWorld (World w){
         setLocation (origin.getX() - (direction * 100), origin.getY() - yOffset);
     }
 
+    public void act(){
+        if (getObjectsInRange(3, Hero.class).size() != 0){
+            moving = false;
+            stoppedTick = 30;
+        }
+        
+        if (moving) {
+            drive();
+        }
+        else if (!moving){
+            if (stoppedTick == 0){
+                moving = true;
+                speed = maxSpeed;
+            } else{
+                stoppedTick --;
+            }
+
+        } 
+     
+        if (checkEdge()){
+            getWorld().removeObject(this);
+        }
+    }
     /**
      * A method used by all Vehicles to check if they are at the edg
      */
@@ -58,20 +89,83 @@ public abstract class Vehicle extends SuperSmoothMover
         // since every Vehicle "promises" to have a getSpeed() method,
         // we can call that on any vehicle to find out it's speed
         Vehicle ahead = (Vehicle) getOneObjectAtOffset (direction * (int)(speed + getImage().getWidth()/2 + 4), 0, Vehicle.class);
+        
         if (this.getClass() != Plane.class){
             if (ahead == null && !snowy || ahead != null && ahead.getClass() == Plane.class) // make sure the groud vehicles do not follow the plane in front of them
             {
                 speed = maxSpeed;
             } else if (ahead == null && snowy){
-                speed = maxSpeed / 3;
-            } else {
+                speed = maxSpeed / 2.5;
+            } else if (ahead.getClass() != Plane.class){
+                
                 speed = ahead.getSpeed();
+                if (Greenfoot.getRandomNumber(2) == 0) honk.play();
+                if (changeLaneTick < 0){
+                    changeLane();
+                    changeLaneTick = 30;
+                }
+
             } 
+            if (changingLane){
+                changeLane();
+                changeLaneTick = 30;
+            }
+            changeLaneTick --;
         }
         move (speed * direction);
+        if (up != null && down != null) {
+            up.setLocation(getX(), yPos  - 50);
+            down.setLocation(getX(), yPos + 50);
+        }
+        
+        // Debugging code: show whether the vehicle can change lanes
+        /*
+        if (!up.canTurn()) up.setColor(220, 10, 10);
+        else up.setColor(10, 220, 10);
+        if (!down.canTurn()) down.setColor(220, 10, 10) ;
+        else down.setColor(10, 220, 10);
+        */
+        
     }   
     
-    public void Explode(){
+    public void changeLane(){
+        if (changingLane){
+            VehicleWorld vw = (VehicleWorld)getWorld();
+            if (yDir == 1 && getY() + yDir * 2 > vw.getSpawnerPos(lane + 1) - yOffset) {
+                
+                
+                changingLane = false;
+                yPos = vw.getSpawnerPos(lane + 1);
+                lane ++;
+                yDir = 0;
+                setLocation(getX(), yPos - yOffset);
+                up.setLocation(getX(), yPos  - 50);
+                down.setLocation(getX(), yPos + 50);
+            } else if (yDir == -1 && getY() + yDir * 2 < vw.getSpawnerPos(lane - 1) - yOffset) {
+                changingLane = false;
+                yPos = vw.getSpawnerPos(lane - 1);
+                lane --;
+                yDir = 0;
+                setLocation(getX(), yPos - yOffset);
+                up.setLocation(getX(), yPos - 50);
+                down.setLocation(getX(), yPos + 50);
+            }
+            setLocation(getX() + 0.5, getY() + yDir * 2);
+        }
+        else if (!changingLane && up.canTurn()){
+            System.out.println("UP");
+            changingLane = true;
+            yDir = -1;
+            
+        } else if (!changingLane && down.canTurn()){
+            System.out.println("DOWN");
+            changingLane = true;
+            yDir = 1;
+            // down.setColor(10, 220, 10);
+        }
+        
+       
+        
         
     }
 
@@ -93,4 +187,17 @@ public abstract class Vehicle extends SuperSmoothMover
     public void setSnowState(boolean snowState){
         this.snowy = snowState;
     }
+    
+    public void setLane(int lane){
+        // Set collision boxes (up and down) for lane change
+        this.lane = lane;
+        VehicleWorld vw = (VehicleWorld)getWorld();
+        yPos = vw.getLanePos(lane);
+        up = new Rectangle(0, 0, getImage().getWidth() - 5, 5);
+        
+        down = new Rectangle(0, 0, getImage().getWidth() - 5, 5);
+        vw.addObject(up, getX(), yPos - 50); vw.addObject(down, getX(), yPos + 50);
+    }
+    
+    
 }

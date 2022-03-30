@@ -9,7 +9,7 @@ public class Bus extends Vehicle
         super (origin); // call the superclass' constructor first
         
         //Set up values for Bus
-        maxSpeed = 3 + (Math.random() * 3.5);
+        maxSpeed = 2.5 + (Math.random() * 3.75);
         speed = maxSpeed;
         // because the Bus graphic is tall, offset it a up (this may result in some collision check issues)
         yOffset = getImage().getHeight()/2 - 20;
@@ -23,28 +23,11 @@ public class Bus extends Vehicle
      */
     public void act()
     {
-        if (moving) {
-            drive();
-        }
-        else if (!moving){
-            if (stoppedTick == 0){
-                moving = true;
-                speed = maxSpeed;
-            } else{
-                stoppedTick --;
-            }
-            /* else{
-                speed = maxSpeed * Math.abs(500 - stoppedTimer.millisElapsed()) / 5000.0;
-            }
-            */
-            // drive();
-        } 
+        
         
         checkHitPedestrian();
-        if (checkEdge()){
-            getWorld().removeObject(this);
-        }
         
+        super.act();
     }
 
     
@@ -61,7 +44,7 @@ public class Bus extends Vehicle
                 getWorld().removeObject(p);
                 moving = false;
                 speed = 0;
-                stoppedTick = 60;
+                stoppedTick = 40;
                 return true;
             }
             
@@ -73,7 +56,7 @@ public class Bus extends Vehicle
                 getWorld().removeObject(p);
                 moving = false;
                 speed = 0;
-                stoppedTick = 60;
+                stoppedTick = 40;
                 return true;
             }
             

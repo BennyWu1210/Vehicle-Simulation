@@ -8,7 +8,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * <p> The Pedestrians are not as dumb as before (they don't want straight into Vehicles) and the Vehicles
  *     do a somewhat better job detecting Pedestrians.</p>
  * 
- * @author (your name) 
+ * @author Benny
  * @version (a version number or a date)
  */
 public class VehicleWorld extends World
@@ -25,10 +25,18 @@ public class VehicleWorld extends World
     private int laneHeight, laneCount, spaceBetweenLanes;
     private int[] lanePositionsY;
     private VehicleSpawner[] laneSpawners;
-    private int weatherTicks;
+    private int weatherTicks, titleTicks;
     private boolean snowy;
     private Effect weather;
+    private Label title;
+    private int vehicleCount;
 
+    // Create collision blocks for lane change
+    private Rectangle midBlock, lowerBlock, upperBlock;
+    
+    // Background ambient sound
+    private GreenfootSound ambientMusic;
+    
     /**
      * Constructor for objects of class MyWorld.
      * 
@@ -38,7 +46,7 @@ public class VehicleWorld extends World
         // Create a new world with 800x600 cells with a cell size of 1x1 pixels.
         super(800, 600, 1, false); 
 
-        setPaintOrder (Effect.class, Plane.class, LightningVehicle.class, Hero.class, Bus.class, Car.class, Pedestrian.class, Ambulance.class);
+        setPaintOrder (Label.class, Effect.class, Plane.class, LightningVehicle.class, Hero.class, Bus.class, Car.class, Pedestrian.class, Ambulance.class);
 
         // set up background
         background = new GreenfootImage ("background_image04.jpg");
@@ -61,16 +69,51 @@ public class VehicleWorld extends World
 
         
         // Init weather ticks
-        weatherTicks = 300;
+        weatherTicks = 500;
+        
+        // Create title
+        title = new Label("Vehicle Simulation", 80);
+        title.setFillColor(Color.BLACK.brighter());
+        addObject(title, 400, 300);
+        titleTicks = 150;
+        
+        // Create collision blocks for lane change
+        
+        lowerBlock = new Rectangle(-25, 0, 1000, 45);
+        midBlock = new Rectangle(-25, 0, 1000, 45);
+        upperBlock = new Rectangle(-25, 0, 1000, 45);
+        
+        addObject(lowerBlock, 400, 575);
+        addObject(midBlock, 400, 395);
+        addObject(upperBlock, 400, 210);
+        
+        // set traffic noice
+        if (ambientMusic == null) {
+            
+            ambientMusic = new GreenfootSound("Traffic.wav");
+            
+        }
+        
+        
     }
     public void act () {
-        spawn();
+        
+        
+        if (titleTicks < 100 && titleTicks > -50){
+            title.setLocation(title.getX(), title.getY() - 4);
+        }
+        if (titleTicks > -50) titleTicks --;
+        else spawn();
+        if (titleTicks == -30){
+            ambientMusic.setVolume(30);
+            ambientMusic.playLoop();
+        }
         
         if (weatherTicks == 0){
             weather = new Snowstorm(getWidth()/2, getHeight()/2);
             addObject(weather, getWidth()/2, getHeight()/2);
             snowy = true;
-            weatherTicks = (int)(820 + Math.random() * 600);
+            weatherTicks = (int)(1000 + Math.random() * 650);
         }
         
         if (weather == null || weather.getWorld() == null){
@@ -80,9 +123,20 @@ public class VehicleWorld extends World
         weatherTicks --;
     }
 
+    public void started(){
+        if (titleTicks < 0) {
+            ambientMusic.setVolume(30);
+            ambientMusic.playLoop();
+        }
+    }
+    
+    public void stopped(){
+        ambientMusic.stop();
+    }
+    
     private void spawn () {
         // Chance to spawn a vehicle
-        if (Greenfoot.getRandomNumber (35) == 0){
+        if (Greenfoot.getRandomNumber (32) == 0){
             int lane = Greenfoot.getRandomNumber(laneCount);
             Vehicle vehicleAdded;
             if (!laneSpawners[lane].isTouchingVehicle()){
@@ -94,7 +148,7 @@ public class VehicleWorld extends World
                 } else if (vehicleType == 2){
                     vehicleAdded = new Ambulance(laneSpawners[lane]);
                 } else if (vehicleType == 3){
-                    if (Greenfoot.getRandomNumber(2) == 1) vehicleAdded = new Plane(laneSpawners[lane]);
+                    if (Greenfoot.getRandomNumber(5) != 0) vehicleAdded = new Plane(laneSpawners[lane]);
                     else vehicleAdded = new LightningVehicle(laneSpawners[lane]);
                 } else{
                     if (Greenfoot.getRandomNumber(3) == 0) vehicleAdded = new Car(laneSpawners[lane]);
@@ -103,15 +157,18 @@ public class VehicleWorld extends World
                 }
                 vehicleAdded.setSnowState(snowy);
                 addObject(vehicleAdded, 0, 0);
+                vehicleAdded.setLane(lane);
+                vehicleCount ++;
             }
             
             
             
             
         }
-
+        
         // Chance to spawn a Pedestrian
-        if (Greenfoot.getRandomNumber (20) == 0){
+        
+        if (Greenfoot.getRandomNumber (45) == 0){
             
             int spawnDir = Greenfoot.getRandomNumber(2) == 0 ? 1 : -1;
             int xLocation = Greenfoot.getRandomNumber (600) + 100; // random between 99 and 699, so not near edges
@@ -124,10 +181,10 @@ public class VehicleWorld extends World
                 addObject(new Businessman(spawnDir), xLocation, yLocation);
             } else if (pedestrianType == 2){
                 addObject(new RunningMan(spawnDir), xLocation, yLocation);
-            } else if (pedestrianType == 3 && Greenfoot.getRandomNumber(3) == 0){
+            } else if (pedestrianType == 3 && Greenfoot.getRandomNumber(4) == 0){
                 addObject(new Hero(spawnDir), xLocation, yLocation);
             }
-            
+        
             
                     
 
@@ -262,9 +319,24 @@ public class VehicleWorld extends World
         target.setColor (GREY_BORDER);
         target.fillRect (0, lanePositions[lanes-1] + heightOffset, target.getWidth(), spacing);
 
+        
         return lanePositions;
     }
     
     
-
+    public int getLanePos(int lane){
+        return lanePositionsY[lane];
+    }
+    
+    public int getSpawnerPos(int lane){
+        return laneSpawners[lane].getY();
+    }
+    
+    public boolean intersectBlock(Rectangle block){
+        
+        if (upperBlock.intersects(block) || midBlock.intersects(block) || lowerBlock.intersects(block)){
+            return true;
+        }
+        return false;
+    }
 }

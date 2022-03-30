@@ -22,14 +22,12 @@ public class Businessman extends Pedestrian
     }
     public void act()
     {
-        super.act();
-        
         spawnGoldCoin();
+        super.act();
     }
     
     public void spawnGoldCoin(){
         if (Greenfoot.getRandomNumber(300) == 0){
-            System.out.println("HUEH");
             GoldCoin c = new GoldCoin(getX(), getY());
             getWorld().addObject(c, getX(), getY());
         }

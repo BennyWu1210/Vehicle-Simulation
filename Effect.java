@@ -33,6 +33,7 @@ public class Effect extends Actor
         this.xPos = x;
         this.yPos = y;
         this.gifCycle = 1;
+        this.actCounter = 1000;
     }
     
     
@@ -69,6 +70,18 @@ public class Effect extends Actor
         
         
     }
+    
+    public double distanceFrom(Actor actor){
+        return distanceFrom(actor.getX(), actor.getY());
+    }
+    
+    public double distanceFrom(int x, int y)
+    {
+        double distance = Math.sqrt(Math.pow(x-getX(), 2) + Math.pow(y-getY(), 2));
+        return distance;
+    }    
+    
+    
     
     public void setTick(int ticks){
         this.actCounter = ticks;

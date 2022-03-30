@@ -1,0 +1,14 @@
+#BlueJ class context
+comment0.target=Rectangle
+comment0.text=\n\ Write\ a\ description\ of\ class\ Rectangle\ here.\n\ \n\ @author\ (your\ name)\ \n\ @version\ (a\ version\ number\ or\ a\ date)\n
+comment1.params=x1\ y1\ x2\ y2
+comment1.target=Rectangle(int,\ int,\ int,\ int)
+comment2.params=
+comment2.target=void\ act()
+comment3.params=rect
+comment3.target=boolean\ intersects(Rectangle)
+comment4.params=
+comment4.target=boolean\ canTurn()
+comment5.params=r\ g\ b
+comment5.target=void\ setColor(int,\ int,\ int)
+numComments=6

@@ -23,11 +23,12 @@ public class Soldier extends Pedestrian
     }
     public void act()
     {
-        super.act();
-        if (Greenfoot.getRandomNumber(100) == 0) {
+        
+        if (awake && Greenfoot.getRandomNumber(500) == 0) {
             Effect ex = new Explosion(getX(), getY());
             getWorld().addObject(ex, getX(),getY());
         }
+        super.act();
         // Add your action code here.
     }
 }

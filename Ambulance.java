@@ -8,7 +8,7 @@ public class Ambulance extends Vehicle
     public Ambulance(VehicleSpawner origin){
         super (origin); // call the superclass' constructor first
         
-        maxSpeed = 5 + (int)(Math.random() * 2.5);
+        maxSpeed = 4 + (int)(Math.random() * 2.5);
         speed = maxSpeed;
     }
 
@@ -18,11 +18,8 @@ public class Ambulance extends Vehicle
      */
     public void act()
     {
-        drive();
         checkHitPedestrian();
-        if (checkEdge()){
-            getWorld().removeObject(this);
-        }
+        super.act();
 
     }
 
@@ -34,8 +31,8 @@ public class Ambulance extends Vehicle
         for (Pedestrian p: lst){
             if (p != null && !p.isAwake()){
                 p.healMe();
-                Effect a = new Heart(getPreciseX() + 15, getPreciseY() - 15);
-                getWorld().addObject(a, (int)getPreciseX() + 15, (int)getPreciseY() - 15);
+                
+                
             }
         }
         

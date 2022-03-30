@@ -26,7 +26,7 @@ public class Snowstorm extends Effect
     public void addedToWorld (World w){
         // create an image that's a little bit bigger than the World
         //image = new GreenfootImage (w.getWidth() + 100, w.getHeight() + 100);
-        image = drawSnowStorm(w.getWidth() + 300, w.getHeight() + 300, 100);
+        image = drawSnowStorm(w.getWidth() + 200, w.getHeight() + 280, 100);
         setImage(image);
         ArrayList<Vehicle> vehicles = (ArrayList<Vehicle>) w.getObjects(Vehicle.class);
         for (Vehicle v : vehicles){

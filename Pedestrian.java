@@ -10,6 +10,7 @@ public abstract class Pedestrian extends SuperSmoothMover
     protected int direction;
     protected boolean awake;
     protected boolean canHit;
+    protected int knockDownTime;
     
     
     public Pedestrian(int direction) {
@@ -38,7 +39,16 @@ public abstract class Pedestrian extends SuperSmoothMover
                 getWorld().removeObject(this);
                 return;
             }
+        } else{
+            knockDownTime ++;
         }
+        
+        if (knockDownTime > 300){
+            knockDownTime = 0;
+            healMe();
+        }
+         
+        
     }
 
     /**
@@ -53,6 +63,7 @@ public abstract class Pedestrian extends SuperSmoothMover
         speed = 0;
         setRotation (90);
         awake = false;
+        knockDownTime = 0;
     }
 
     /**
@@ -60,6 +71,9 @@ public abstract class Pedestrian extends SuperSmoothMover
      */
     public void healMe () {
         speed = maxSpeed;
+        // Heart effect
+        Effect a = new Heart(getPreciseX() + 10, getPreciseY() - 10);
+        getWorld().addObject(a, (int)getPreciseX() + 10, (int)getPreciseY() - 10);
         setRotation (0);
         awake = true;
     }

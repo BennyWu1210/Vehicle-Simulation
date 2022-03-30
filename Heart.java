@@ -19,7 +19,6 @@ public class Heart extends Effect
     public void act()
     {
         super.act();
-        System.out.println("HEART");
         
     }
 }

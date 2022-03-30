@@ -8,10 +8,8 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class Explosion extends Effect
 {
-    /**
-     * Act - do whatever the Explosion wants to do. This method is called whenever
-     * the 'Act' or 'Run' button gets pressed in the environment.
-     */
+    private GreenfootSound sound;
+    
     public Explosion(int x, int y){
         super(x, y, 10);
         this.isGif = true;
@@ -22,6 +20,8 @@ public class Explosion extends Effect
         this.gifCounter = this.gifChangeRate;
         this.gifIndex = 0;
         
+        this.sound = new GreenfootSound("bomb_sound.mp3");
+        this.sound.setVolume(30);
         // Set size for all explosion effects
         
         for (GreenfootImage gfi: gifImageList){
@@ -32,6 +32,7 @@ public class Explosion extends Effect
     {
          
         super.act();
+        this.sound.play();
         
         
     }

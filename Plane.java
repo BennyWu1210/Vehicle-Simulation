@@ -28,9 +28,7 @@ public class Plane extends Vehicle
         // use an individual method to fly
         
         drive();
-        if (checkEdge()){
-            getWorld().removeObject(this);
-        }
+        super.act();
     }
     
     public boolean checkHitPedestrian(){
