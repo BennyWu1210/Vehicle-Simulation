@@ -172,9 +172,7 @@ public abstract class Vehicle extends SuperSmoothMover
             yDir = 1;
             // down.setColor(10, 220, 10);
         }
-        
-       
-        
+
         
     }
 

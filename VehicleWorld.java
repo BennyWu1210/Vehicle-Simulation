@@ -36,7 +36,6 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  *    
  * - "Plane": Just some planes flying around - nobody wants to get stucked in a traffic jam.
  *    
- *    
  * -  Other cool effects: I have implemented effects such as "Explosion" whenever things get blown up,  
  *   "AddOne" when a pedestrain enters a bus, "Heart" when a pedestrain gets revived (either by themselves or by an ambulance). 
  *    I also made the snowstorm start at random intervals to make the simulation more unique.
@@ -234,7 +233,7 @@ public class VehicleWorld extends World
             
             int spawnDir = Greenfoot.getRandomNumber(2) == 0 ? 1 : -1;
             int xLocation = Greenfoot.getRandomNumber (600) + 100; // random between 99 and 699, so not near edges
-            int yLocation = spawnDir == 1 ? 50 : 550;
+            int yLocation = spawnDir == 1 ? 140 : 550;
             int pedestrianType = Greenfoot.getRandomNumber(4);
             
             if (pedestrianType == 0){
