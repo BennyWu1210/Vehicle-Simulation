@@ -10,6 +10,7 @@ public class Heart extends Effect
 {
     
     public Heart(double x, double y){
+        // Calls super constructor, then create images
         super(x, y, 180);
         this.image = new GreenfootImage("heart.png");
         this.getImage().scale(32, 32);
@@ -18,6 +19,7 @@ public class Heart extends Effect
     
     public void act()
     {
+        // Calls super's act method
         super.act();
         
     }

@@ -6,10 +6,11 @@ import java.util.*;
 public class Ambulance extends Vehicle
 {
     public Ambulance(VehicleSpawner origin){
-        super (origin); // call the superclass' constructor first
+        // call the superclass' constructor first
+        super (origin); 
         
-        maxSpeed = 4 + (int)(Math.random() * 2.5);
-        speed = maxSpeed;
+        // Set speed
+        this.maxSpeed = this.speed = 4 + (int)(Math.random() * 2.5);
     }
 
     /**
@@ -18,7 +19,9 @@ public class Ambulance extends Vehicle
      */
     public void act()
     {
+        // Check hit pedestrian
         checkHitPedestrian();
+        // Calls super's act method
         super.act();
 
     }
@@ -30,9 +33,8 @@ public class Ambulance extends Vehicle
         
         for (Pedestrian p: lst){
             if (p != null && !p.isAwake()){
+                // Heals the pedestrian
                 p.healMe();
-                
-                
             }
         }
         

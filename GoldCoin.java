@@ -14,6 +14,7 @@ public class GoldCoin extends Effect
      */
     
     public GoldCoin(int x, int y){
+        // Calls super constructor, then create images
         super(x, y, 5);
         this.isGif = true;
         this.gifImage = new GifImage("goldCoin.gif");
@@ -32,6 +33,7 @@ public class GoldCoin extends Effect
     
     public void act()
     {
+        // Calls super's act method
         super.act();
         
     }

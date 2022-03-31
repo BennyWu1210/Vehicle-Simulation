@@ -20,15 +20,21 @@ public class Effect extends Actor
     protected GreenfootImage image;
     
     
-    
+    /*
+     * Standard constructor
+     */
     public Effect(double x, double y, int ticks){
         this.xPos = x; 
         this.yPos = y;
         this.actCounter = ticks;
+        // initialize the numberm of times the gif displays
         this.gifCycle = 1;
         setLocation((int)this.xPos, (int)this.yPos);
     }
     
+    /*
+     * Alternate constructor for infinite repeats of the same effect
+     */
     public Effect(double x, double y){
         this.xPos = x;
         this.yPos = y;
@@ -39,8 +45,8 @@ public class Effect extends Actor
     
     public void act()
     {
-        // Add your action code here.
-        // for later
+        // If the effect is represented by a gif, change its indices accordingly to the rate.
+        // Otherwise, decrease the actCounter and check if the image needs to fade away or not
         if (isGif){
             gifCounter --;
             if (gifCounter <= 0){
@@ -71,10 +77,16 @@ public class Effect extends Actor
         
     }
     
+    /*
+     * Check this effect's distance from an actor
+     */
     public double distanceFrom(Actor actor){
-        return distanceFrom(actor.getX(), actor.getY());
+        return distanceFrom(actor.getX(), actor.getY()); // method overloading
     }
     
+    /*
+     * Check this effect's distance from a coordinate
+     */
     public double distanceFrom(int x, int y)
     {
         double distance = Math.sqrt(Math.pow(x-getX(), 2) + Math.pow(y-getY(), 2));
@@ -82,11 +94,16 @@ public class Effect extends Actor
     }    
     
     
-    
+    /* 
+     * Set the ticks for this effect
+     */    
     public void setTick(int ticks){
         this.actCounter = ticks;
     }
     
+    /*
+     * Override getImage for gif purposes
+     */
     public GreenfootImage getImage(){
         return isGif ? gifImageList.get(gifIndex) : image;
     }

@@ -20,6 +20,7 @@ public class Fireball extends Effect
     private GreenfootSound sound;
     
     public Fireball(int x, int y){
+        // Calls super constructor, then create images
         super(x, y);
         this.speed = 3;
         this.isGif = true;
@@ -30,6 +31,7 @@ public class Fireball extends Effect
         this.gifCounter = this.gifChangeRate;
         this.gifIndex = 0;
         
+        // initialize sound effect
         this.sound = new GreenfootSound("Fireball_sound.mp3");
         this.sound.setVolume(30);
         
@@ -44,19 +46,22 @@ public class Fireball extends Effect
      */
     public void act() 
     {
+        // play sound effects
         this.sound.play();
         travelTime ++;
         
         Pedestrian touched = (Pedestrian)getOneIntersectingObject(Pedestrian.class);
-        if (touched != null && touched.getClass() != Hero.class){
+        if (touched != null && touched.getClass() != Hero.class){ // Avoid blowing up a hero
             touched.knockDown();
             disappear();
             getWorld().removeObject(this);
             return;
         }
+        
+        // Check if it has a target or not. If there is move toward that target, otherwise move to a random position.
         if(hasTarget && target.getWorld() != null)
         {
-            
+            // Code from Grade 11 Project
             if(travelTime > 90)
             {
 
@@ -89,22 +94,33 @@ public class Fireball extends Effect
                 getWorld().removeObject(this);
             }
         }
+        
+        // calls super's act method
         super.act();
 
     }    
     
+    /* 
+     * Set target for this fireball
+     */
     public void setTarget(Pedestrian ped){
         hasTarget = true;
         target = ped;
         destination = new int[]{target.getX(), target.getY()};
     }
     
+    /*
+     * Add an explosion at the coordinates of this fireball
+     */
     public void disappear(){
         if (target.getWorld() != null) target.knockDown();
         Effect explosion = new Explosion(getX(), getY());
         getWorld().addObject(explosion, getX(), getY());
     }
     
+    /*
+     * Move toward a destination
+     */
     public void move(int x, int y){
         double d = distanceFrom(x, y);
         double blocks = d/speed;

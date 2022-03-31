@@ -26,9 +26,13 @@ public class LightningVehicle extends Vehicle
 
     public void act()
     {
+        // Check hit pedestrian
+        checkHitPedestrian();
         
+
         checkHitPedestrian();
 
+        // Keep track of its target for lightning strike
         if (target == null || hitTime == 0){
             hitTime = hitSpeed;
             List<Pedestrian> pedList = getObjectsInRange(radius, Pedestrian.class);
@@ -39,7 +43,10 @@ public class LightningVehicle extends Vehicle
             }
         }
         hitTime --;
+        
+        // Calls super's act method
         super.act();
+
     }
     
 

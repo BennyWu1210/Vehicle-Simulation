@@ -192,6 +192,7 @@ public abstract class SuperSmoothMover extends Actor
         return rotation;
     }
     
+    // Override "getImage" for gifs
     public GreenfootImage getImage(){
         if (!isGif) {
             return super.getImage();

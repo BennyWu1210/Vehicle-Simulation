@@ -33,6 +33,7 @@ public abstract class Vehicle extends SuperSmoothMover
             getImage().mirrorHorizontally();
         }
         
+        // Sets sound effect when the vehicle switches lanes
         honk = new GreenfootSound("car_horn.wav");
         honk.setVolume(15);
     }
@@ -42,11 +43,13 @@ public abstract class Vehicle extends SuperSmoothMover
     }
 
     public void act(){
+        // Stop if there is a hero nearby (scary!)
         if (getObjectsInRange(3, Hero.class).size() != 0){
             moving = false;
             stoppedTick = 30;
         }
         
+        // Controls the movement
         if (moving) {
             drive();
         }
@@ -60,6 +63,7 @@ public abstract class Vehicle extends SuperSmoothMover
 
         } 
      
+        // Remove this from world once it hits edge
         if (checkEdge()){
             getWorld().removeObject(this);
         }
@@ -119,6 +123,8 @@ public abstract class Vehicle extends SuperSmoothMover
         }
         
         // Debugging code: show whether the vehicle can change lanes
+        // THIS IS VERY COOL!!!
+        
         /*
         if (!up.canTurn()) up.setColor(220, 10, 10);
         else up.setColor(10, 220, 10);
@@ -128,11 +134,14 @@ public abstract class Vehicle extends SuperSmoothMover
         
     }   
     
+    /*
+     * Change lane method! A very simple but also effective algorithm for lane changes! 
+     * It only needs to detect two cases (up and down) rather than checking for special cases
+     */
     public void changeLane(){
         if (changingLane){
             VehicleWorld vw = (VehicleWorld)getWorld();
             if (yDir == 1 && getY() + yDir * 2 > vw.getSpawnerPos(lane + 1) - yOffset) {
-                
                 
                 changingLane = false;
                 yPos = vw.getSpawnerPos(lane + 1);
@@ -188,13 +197,16 @@ public abstract class Vehicle extends SuperSmoothMover
         this.snowy = snowState;
     }
     
+    /*
+     * Intialize the detection boxes for this particular vehicle (up adn down)
+     */
     public void setLane(int lane){
         // Set collision boxes (up and down) for lane change
         this.lane = lane;
         VehicleWorld vw = (VehicleWorld)getWorld();
         yPos = vw.getLanePos(lane);
-        up = new Rectangle(0, 0, getImage().getWidth() - 5, 5);
         
+        up = new Rectangle(0, 0, getImage().getWidth() - 5, 5);
         down = new Rectangle(0, 0, getImage().getWidth() - 5, 5);
         vw.addObject(up, getX(), yPos - 50); vw.addObject(down, getX(), yPos + 50);
     }

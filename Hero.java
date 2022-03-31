@@ -25,12 +25,13 @@ public class Hero extends Pedestrian
     }
     public void act()
     {
+        // Attack other pedestrians who are nearby using fireball
         if (fireTime == 0){
             fireTime = 50;
             
-            targets = getObjectsInRange(80, Pedestrian.class);
+            targets = getObjectsInRange(80, Pedestrian.class); // range of 80 pixels
             for (Pedestrian p: targets){
-                if (p.getClass() == Hero.class || p.getClass() == RunningMan.class) continue;
+                if (!p.canBeHit()) continue;
                 Fireball fire = new Fireball(getX(), getY());
                 fire.setTarget(p);
                 getWorld().addObject(fire, getX(), getY());
@@ -38,7 +39,7 @@ public class Hero extends Pedestrian
             
             targets = getIntersectingObjects(Pedestrian.class);
             for (Pedestrian p: targets){
-                if (p.getClass() == Hero.class || p.getClass() == RunningMan.class) continue;
+                if (!p.canBeHit()) continue;
                 p.knockDown();
             }
         }
@@ -46,7 +47,10 @@ public class Hero extends Pedestrian
         super.act();
     }
     
-    public void knowckDown(){
+    /*
+     * Override knockDown() method
+     */
+    public void knockDown(){
         setLocation(getX() - 30 + Math.random() * 60, getY() + Math.random() * 40);
     }
 }

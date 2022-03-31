@@ -7,19 +7,21 @@ public class Car extends Vehicle
 {
     
     public Car(VehicleSpawner origin) {
-        super(origin); // call the superclass' constructor
-        maxSpeed = 2 + (Math.random() * 5.5);
-        speed = maxSpeed;
+        // call the superclass' constructor
+        super(origin); 
+        
+        // set speed and offset
+        this.maxSpeed = this.speed = 2 + (Math.random() * 5.5);
         yOffset = 0;
     }
 
     public void act()
     {
-        drive(); 
+        // Check hit pedestrian
         checkHitPedestrian();
-        if (checkEdge()){
-            getWorld().removeObject(this);
-        }
+        // Calls super's act method
+        super.act();
+
     }
     
     /**

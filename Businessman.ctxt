@@ -7,4 +7,5 @@ comment2.params=
 comment2.target=void\ act()
 comment3.params=
 comment3.target=void\ spawnGoldCoin()
+comment3.text=\n\ \n
 numComments=4

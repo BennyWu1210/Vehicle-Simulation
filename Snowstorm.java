@@ -9,15 +9,12 @@ import java.util.*;
  */
 public class Snowstorm extends Effect
 {
-    /**
-     * Act - do whatever the Rain wants to do. This method is called whenever
-     * the 'Act' or 'Run' button gets pressed in the environment.
-     */
     
     private int maxShift, xShift, yShift;
     private int midX, midY;
     private final int MAX_TICK = 450;
     public Snowstorm(int x, int y){
+        // Calls super constructor, then set ticks (duration of snow storm) as MAX_TICK
         super(x, y);
         setTick(MAX_TICK);
         maxShift = 150;
@@ -39,6 +36,7 @@ public class Snowstorm extends Effect
     public void act()
     {
         
+        // Recover the speed of all vehicles just as it ends
         if (actCounter < 2){
             ArrayList<Vehicle> vehicles = (ArrayList<Vehicle>) getWorld().getObjects(Vehicle.class);
             for (Vehicle v : vehicles){
@@ -46,15 +44,17 @@ public class Snowstorm extends Effect
             }
         }
         
-        
+        // The snow moves around
         if (getX() == midX){
             midX = getX() + (int)(Math.random() * 10);
         }
         
         if (actCounter % 2 == 0) setLocation(getX() + (midX - getX()) / 2, getY() + 1);
         
+        // Calls super's act method
         super.act();
         
+        // Slowy fade in
         if (MAX_TICK - actCounter < 120){
             getImage().setTransparency((MAX_TICK - actCounter) * 2);
         } 

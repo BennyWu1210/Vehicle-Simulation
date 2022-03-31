@@ -8,10 +8,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class Plane extends Vehicle
 {
-    /**
-     * Act - do whatever the Plane wants to do. This method is called whenever
-     * the 'Act' or 'Run' button gets pressed in the environment.
-     */
+    private GreenfootSound sound;
     public Plane(VehicleSpawner origin){
         super (origin); // call the superclass' constructor first
         
@@ -20,20 +17,28 @@ public class Plane extends Vehicle
         speed = maxSpeed;
         // because the Bus graphic is tall, offset it a up (this may result in some collision check issues)
         yOffset = 15;
+        
+        // set sound
+        sound = new GreenfootSound("airplane.wav");
+        sound.setVolume(68);
     }
     
 
     public void act()
     {
-        // use an individual method to fly
         
+        // Play airplane sound effect
+        sound.play();
+        
+        // Fly the plane!
         drive();
+        
+        // Call super's act method
         super.act();
     }
     
     public boolean checkHitPedestrian(){
-        
-        // empty now
+        // unnecessary method
         return false;
     }
 }

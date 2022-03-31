@@ -34,13 +34,15 @@ public class RunningMan extends Pedestrian
         // sets a random X location to run toward
         if (awake){
             if (Math.abs(getX() - randomXDest) < 5) {
-                randomXDest = -80 + getX() + (int)(Math.random() * 160);
+                randomXDest = -80 + getX() + (int)(Math.random() * 160); // between -80 to +80
                 if (getX() < 50) randomXDest += 50;
                 if (getX() > 750) randomXDest -= 50;
                 
             }
             setLocation(getX() + speed * (randomXDest - getX() > 0 ? 1 : -1), getY());
         }
+        
+        // Calls super's act method
         super.act();
     }
 }

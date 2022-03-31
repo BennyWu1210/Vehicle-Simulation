@@ -23,7 +23,7 @@ public class Soldier extends Pedestrian
     }
     public void act()
     {
-        
+        // Random firing ammos
         if (awake && Greenfoot.getRandomNumber(500) == 0) {
             Effect ex = new Explosion(getX(), getY());
             getWorld().addObject(ex, getX(),getY());

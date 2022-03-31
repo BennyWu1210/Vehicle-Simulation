@@ -26,6 +26,9 @@ public class Businessman extends Pedestrian
         super.act();
     }
     
+    /*
+     * Spawns gold coin randomly behind
+     */
     public void spawnGoldCoin(){
         if (Greenfoot.getRandomNumber(300) == 0){
             GoldCoin c = new GoldCoin(getX(), getY());

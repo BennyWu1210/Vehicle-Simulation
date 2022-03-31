@@ -23,11 +23,11 @@ public class Bus extends Vehicle
      */
     public void act()
     {
-        
-        
+        // Check hit pedestrian
         checkHitPedestrian();
-        
+        // Calls super's act method
         super.act();
+
     }
 
     
@@ -35,7 +35,8 @@ public class Bus extends Vehicle
         
         int halfWidth = (int)(getImage().getWidth() / 2.0);
         for (int x = -halfWidth; x <= halfWidth; x++){
-            // System.out.println(x);
+            
+            // Check for pedestrians nearby, if there are any then take them away!
             Pedestrian p = (Pedestrian)getOneObjectAtOffset(x, yOffset, Pedestrian.class);
             
             if (p != null && p.isAwake() && p.canBeHit() && p.getDirection() == -1){

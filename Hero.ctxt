@@ -6,5 +6,6 @@ comment1.target=Hero(int)
 comment2.params=
 comment2.target=void\ act()
 comment3.params=
-comment3.target=void\ knowckDown()
+comment3.target=void\ knockDown()
+comment3.text=\n\ Override\ knockDown()\ method\n
 numComments=4

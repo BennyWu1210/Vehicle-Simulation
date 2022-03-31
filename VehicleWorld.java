@@ -7,9 +7,66 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  *     and the interactions smoother.</p>
  * <p> The Pedestrians are not as dumb as before (they don't want straight into Vehicles) and the Vehicles
  *     do a somewhat better job detecting Pedestrians.</p>
+ *     
+ * Improved Vehicle Simulation created by Benny :D
+ * Features: 
+ * - "Businessman": Don't underestimate these seemingly old men (took a while to draw the figure)! 
+ *    They are extremely wealthy and drop gold coins wherever they go. However, being slow as they are,
+ *    they are the worst victim of traffic accidents!
+ *    
+ * - "Hero": They are extremely powerful figures - whenever a vehicle or pedestrian gets too close within their 
+ *    range, they will shoot out deadly fireballs at them and knock them down!
+ *    
+ * - "RunningMan": These people just can't stop running. They run around randomly and have the ability to excape 
+ *    all attacks and car accidents!
+ *   
+ * - "Soldier": Whenever there are no immediate targets (ex. the Hero), the soldiers fire at random directions. 
+ *    Just as useless as the military is in all hollywood movies, aren't they?
+ *    
+ * - "Ambulance": They will revive all the people who have been knocked down - accompanied by a cool effect too!
+ * 
+ * - "Bus": Buses will stop and pick up all pedestrians along its way - not the Running Mans and Heroes though, 
+ *    they prefer to do some exercises.
+ *    
+ * - "Car": Extremely fast vehicles - They will knock down the poor victims that get on its way.
+ * 
+ * - "Lightning Vehicle": Yes, this is a variation of the "Tesla" from the dsupercell Universe (I drew this!). 
+ *    They move extremely slow, but they have the ability to summon lightning from the sky and release them to 
+ *    nearby pedestrians!
+ *    
+ * - "Plane": Just some planes flying around - nobody wants to get stucked in a traffic jam.
+ *    
+ *    
+ * -  Other cool effects: I have implemented effects such as "Explosion" whenever things get blown up,  
+ *   "AddOne" when a pedestrain enters a bus, "Heart" when a pedestrain gets revived (either by themselves or by an ambulance). 
+ *    I also made the snowstorm start at random intervals to make the simulation more unique.
+ *    
+ *    I'd also like to point out the implemention of the change lane algorithm because I AM SUPER PROUD OF IT :D 
+ *    I mentioned this idea with you during class and it worked out perfectly. You can uncomment the debugging code
+ *    in Vehicle's drive method as well as change the transparency in Rectangle's constructor to 30, you will see the 
+ *    detecion boxes in the simulation immediately. It is just so satisfying to see how precise and smooth the algorithm runs.
+ *    
+ *    Enjoy the game!
+ *    
+ *    Credits:
+ *    - Airplane sound effect: https://www.freesoundeffects.com/free-sounds/airplane-10004/20/tot_sold/20/2/
+ *    - Ambient noice: https://www.youtube.com/watch?v=cX-1TfLP_y0, account: Ninja Nomaj
+ *    - Car honk sound effect: https://www.youtube.com/watch?v=FQc5zRy6wBU, account: SoundEffects
+ *    - Fire ball sound effect: https://www.youtube.com/watch?v=FJGdoPmspiU, account Free audio zone
+ *    - Lightining sound effect: https://www.youtube.com/watch?v=TEFn1sB_XzI, account: Sandra Mitchell
+ *    - Explosion sound effect: https://www.youtube.com/watch?v=bhZs3ALdL7Y, account: LibraryDealer
+ *    - Background image: https://www.vectorstock.com/royalty-free-vector/forest-game-background-2d-application-vector-9827363
+ *    - Add One image: https://commons.wikimedia.org/wiki/File:%2B1_ICON.png
+ *    - Running man gif: https://dribbble.com/shots/2995181-Red-Bearded-Running-And-Jumping-Game-Character-Gif
+ *    - Fire ball gif: https://en.picmix.com/stamp/comet-fire-ball-planet-universe-universum-univers-tube-deco-animation-gif-anime-animated-planete-planete-1606910
+ *    - Explosion gif: https://www.reddit.com/r/NoStupidQuestions/comments/jpeyjd/where_does_the_infamous_realistic_explosion/
+ *    - Gold coin image: https://tenor.com/view/coin-spin-gold-pixel-art-gif-16374894
+ *    - Heart image: https://imgbin.com/png/u96AGs9T/minecraft-pocket-edition-minecraft-story-mode-video-games-heart-png
+ *    
+ *    Other characters/images are either provided by Greenfoot, from Mr. Cohen, or created by me.
  * 
  * @author Benny
- * @version (a version number or a date)
+ * @version Mar 30, 2022
  */
 public class VehicleWorld extends World
 {
@@ -88,27 +145,27 @@ public class VehicleWorld extends World
         addObject(upperBlock, 400, 210);
         
         // set traffic noice
-        if (ambientMusic == null) {
-            
-            ambientMusic = new GreenfootSound("Traffic.wav");
-            
-        }
+        if (ambientMusic == null) ambientMusic = new GreenfootSound("Traffic.wav");
+        
         
         
     }
     public void act () {
         
-        
+        // Calculate titleTicks for the initial display of "Vehicle Simulation"
         if (titleTicks < 100 && titleTicks > -50){
             title.setLocation(title.getX(), title.getY() - 4);
         }
         if (titleTicks > -50) titleTicks --;
         else spawn();
+        
+        // Only start the music once the header is gone
         if (titleTicks == -30){
             ambientMusic.setVolume(30);
             ambientMusic.playLoop();
         }
         
+        // Create a snow storm after a random interval between 1000 to 1650 acts
         if (weatherTicks == 0){
             weather = new Snowstorm(getWidth()/2, getHeight()/2);
             addObject(weather, getWidth()/2, getHeight()/2);
@@ -116,6 +173,7 @@ public class VehicleWorld extends World
             weatherTicks = (int)(1000 + Math.random() * 650);
         }
         
+        // Keep track of the state "snowy" for vehicle spawning purposes
         if (weather == null || weather.getWorld() == null){
             snowy = false;
         }
@@ -124,6 +182,7 @@ public class VehicleWorld extends World
     }
 
     public void started(){
+        // Start the music and set its volume to 30
         if (titleTicks < 0) {
             ambientMusic.setVolume(30);
             ambientMusic.playLoop();
@@ -131,6 +190,7 @@ public class VehicleWorld extends World
     }
     
     public void stopped(){
+        // pause music
         ambientMusic.stop();
     }
     
@@ -148,13 +208,15 @@ public class VehicleWorld extends World
                 } else if (vehicleType == 2){
                     vehicleAdded = new Ambulance(laneSpawners[lane]);
                 } else if (vehicleType == 3){
-                    if (Greenfoot.getRandomNumber(5) != 0) vehicleAdded = new Plane(laneSpawners[lane]);
-                    else vehicleAdded = new LightningVehicle(laneSpawners[lane]);
+                    if (Greenfoot.getRandomNumber(4) == 0) vehicleAdded = new Plane(laneSpawners[lane]);
+                    else if (Greenfoot.getRandomNumber(4) == 0) vehicleAdded = new LightningVehicle(laneSpawners[lane]);
+                    else return;
                 } else{
                     if (Greenfoot.getRandomNumber(3) == 0) vehicleAdded = new Car(laneSpawners[lane]);
                     else vehicleAdded = new Ambulance(laneSpawners[lane]);
                     
                 }
+                // Incoportate the weather condition
                 vehicleAdded.setSnowState(snowy);
                 addObject(vehicleAdded, 0, 0);
                 vehicleAdded.setLane(lane);
@@ -323,20 +385,22 @@ public class VehicleWorld extends World
         return lanePositions;
     }
     
-    
+    /*
+     * Gets the lane position
+     */
     public int getLanePos(int lane){
         return lanePositionsY[lane];
     }
     
+    /*
+     * Similar to getLanePos, this methods gets the spawner y-positions.
+     */
     public int getSpawnerPos(int lane){
         return laneSpawners[lane].getY();
     }
     
+    // Check if the blocks has intersected any detection blocks (for lane change purposes);
     public boolean intersectBlock(Rectangle block){
-        
-        if (upperBlock.intersects(block) || midBlock.intersects(block) || lowerBlock.intersects(block)){
-            return true;
-        }
-        return false;
+        return upperBlock.intersects(block) || midBlock.intersects(block) || lowerBlock.intersects(block);
     }
 }
